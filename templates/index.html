@@ -1,63 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Monitoring</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 80%;
-            margin: 50px auto;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        .plotly-graph-div {
+            margin: auto;
+            width: 50%;
+            background-color: rgba(151, 128, 128, 0.688);
             padding: 20px;
-            box-sizing: border-box;
-        }
-
-        h1 {
-            text-align: center;
-            color: #3498db;
-        }
-
-        .gauge {
-            margin-top: 20px;
-        }
-
-        .alert {
-            background-color: #e74c3c;
-            color: #fff;
-            padding: 10px;
-            margin-top: 20px;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        @media only screen and (max-width: 600px) {
-            .container {
-                max-width: 100%;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>System Monitoring</h1>
+        <center><h1>System Monitoring</h1></center>
+        <div id="cpu-gauge"></div>
+        <div id="mem-gauge"></div>
         {% if message %}
-            <div class="alert">{{ message }}</div>
+        <div class="alert alert-danger">{{ message }}</div>
         {% endif %}
-        <div class="gauge" id="cpu-gauge"></div>
-        <div class="gauge" id="mem-gauge"></div>
     </div>
-
     <script>
         var cpuGauge = {
             type: "indicator",
@@ -65,14 +28,14 @@
             value: {{ cpu_percent }},
             gauge: {
                 axis: { range: [null, 100] },
-                bar: { color: "#3498db" },
-                bgcolor: "#ecf0f1",
+                bar: { color: "#1f77b4" },
+                bgcolor: "white",
                 borderwidth: 2,
-                bordercolor: "#bdc3c7",
+                bordercolor: "#ccc",
                 steps: [
-                    { range: [0, 50], color: "#2ecc71" },
-                    { range: [50, 85], color: "#f39c12" },
-                    { range: [85, 100], color: "#e74c3c" }
+                    { range: [0, 50], color: "#d9f0a3" },
+                    { range: [50, 85], color: "#ffeb84" },
+                    { range: [85, 100], color: "#ff5f5f" }
                 ],
                 threshold: {
                     line: { color: "red", width: 4 },
@@ -88,14 +51,14 @@
             value: {{ mem_percent }},
             gauge: {
                 axis: { range: [null, 100] },
-                bar: { color: "#3498db" },
-                bgcolor: "#ecf0f1",
+                bar: { color: "#1f77b4" },
+                bgcolor: "white",
                 borderwidth: 2,
-                bordercolor: "#bdc3c7",
+                bordercolor: "#ccc",
                 steps: [
-                    { range: [0, 50], color: "#2ecc71" },
-                    { range: [50, 85], color: "#f39c12" },
-                    { range: [85, 100], color: "#e74c3c" }
+                    { range: [0, 50], color: "#d9f0a3" },
+                    { range: [50, 85], color: "#ffeb84" },
+                    { range: [85, 100], color: "#ff5f5f" }
                 ],
                 threshold: {
                     line: { color: "red", width: 4 },
@@ -105,8 +68,8 @@
             }
         };
         
-        var cpuGaugeLayout = { title: "CPU Utilization", margin: { t: 20, b: 0 } };
-        var memGaugeLayout = { title: "Memory Utilization", margin: { t: 20, b: 0 } };
+        var cpuGaugeLayout = { title: "CPU Utilization" };
+        var memGaugeLayout = { title: "Memory Utilization" };
         
         Plotly.newPlot('cpu-gauge', [cpuGauge], cpuGaugeLayout);
         Plotly.newPlot('mem-gauge', [memGauge], memGaugeLayout);
